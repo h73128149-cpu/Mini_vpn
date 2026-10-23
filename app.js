@@ -3,14 +3,13 @@ if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor('#070d0a'); tg.setBac
 const BOT_USERNAME = 'Hes_vpn'; // اگر یوزرنیم ربات عوض شد، این مقدار را هم عوض کن.
 function showToast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
 function returnToBot(payload){
+  showToast('در حال بازگشت به ربات…');
   const url = `https://t.me/${BOT_USERNAME}?start=${encodeURIComponent(payload)}`;
-  showToast('در حال انتقال به ربات…');
   if (tg && tg.openTelegramLink) {
-    // Open the bot deep link, then close the Mini App so the user returns to chat.
+    // A start deep-link carries the selected plan to the bot. Do not close too early:
+    // Telegram must first process the link and its start payload.
     tg.openTelegramLink(url);
-    window.setTimeout(() => { try { tg.close(); } catch (e) {} }, 350);
   } else {
-    // Outside Telegram, follow the deep link normally.
     window.location.href = url;
   }
 }
