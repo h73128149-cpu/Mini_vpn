@@ -1,8 +1,14 @@
 const tg = window.Telegram && window.Telegram.WebApp;
+const BOT_USERNAME = "Hesamm_vpnbot";
+const ALLOWED_PRICES = [50000, 100000, 250000, 350000];
+
 if (tg) {
   tg.ready();
   tg.expand();
-  try { tg.setHeaderColor('#070d0a'); tg.setBackgroundColor('#070d0a'); } catch(e) {}
+  try {
+    tg.setHeaderColor('#070d0a');
+    tg.setBackgroundColor('#070d0a');
+  } catch (_) {}
 }
 
 function showToast(text) {
@@ -10,44 +16,60 @@ function showToast(text) {
   if (!el) return;
   el.textContent = text;
   el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2600);
+  window.setTimeout(() => el.classList.remove('show'), 2600);
 }
 
 /*
- * The Mini App is launched from Telegram's WebApp keyboard button.
- * sendData sends JSON as message.web_app_data.data; Telegram closes
- * the Mini App automatically after this call. Do not use t.me username
- * deep-links here, because they can fail with "Username not found".
+ * This store is also hosted as a normal GitHub Pages site, not necessarily
+ * opened as a Telegram Web App. Therefore we use Telegram's bot deep-link
+ * start parameter rather than WebApp.sendData(), which only works for apps
+ * launched through the appropriate Telegram Web App keyboard button.
  */
-function sendToBot(data) {
-  if (tg && typeof tg.sendData === 'function') {
-    try {
-      tg.sendData(JSON.stringify(data));
-      showToast('درخواست ارسال شد؛ در حال بازگشت به ربات…');
+function openBotAction(payload) {
+  const allowed = new Set(['account', 'wallet', 'support', 'shop']);
+  let startPayload = '';
+
+  if (typeof payload === 'string' && allowed.has(payload)) {
+    startPayload = payload;
+  } else if (payload && payload.action === 'buy_plan') {
+    const price = Number(payload.price);
+    if (!ALLOWED_PRICES.includes(price)) {
+      showToast('پلن نامعتبر است.');
       return;
-    } catch (e) {
-      console.error('Telegram sendData failed', e);
     }
+    startPayload = `buy_${price}`;
+  } else {
+    showToast('درخواست نامعتبر است.');
+    return;
   }
-  showToast('فروشگاه را از دکمهٔ Shop داخل ربات باز کنید تا درخواست به ربات ارسال شود.');
+
+  const url = `https://t.me/${BOT_USERNAME}?start=${encodeURIComponent(startPayload)}`;
+  try {
+    if (tg && typeof tg.openTelegramLink === 'function') {
+      tg.openTelegramLink(url);
+      // openTelegramLink normally closes the Web App itself; this is a fallback.
+      window.setTimeout(() => {
+        try { if (tg && typeof tg.close === 'function') tg.close(); } catch (_) {}
+      }, 500);
+    } else {
+      // On a regular browser, open the bot deep link in Telegram/browser.
+      window.location.href = url;
+    }
+  } catch (err) {
+    console.error('Could not open bot deep link', err);
+    window.location.href = url;
+  }
 }
 
 function sendAction(action) {
-  const map = {
-    my_account: { action: 'my_account' },
-    wallet: { action: 'wallet' },
-    support: { action: 'support' },
-    shop: { action: 'shop' }
-  };
-  if (map[action]) sendToBot(map[action]);
-  else showToast('برای ادامه از ربات استفاده کنید.');
+  openBotAction(action);
 }
 
 function choosePlan(price) {
   const p = Number(price);
-  if (![50000, 100000, 250000, 350000].includes(p)) {
+  if (!ALLOWED_PRICES.includes(p)) {
     showToast('پلن نامعتبر است.');
     return;
   }
-  sendToBot({ action: 'buy_plan', price: p });
+  openBotAction({ action: 'buy_plan', price: p });
 }
