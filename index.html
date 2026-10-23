@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0b0b0f"><title>HESVPN | فروشگاه</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="glow glow-a"></div><div class="glow glow-b"></div>
+<header class="top"><div class="brand"><div class="logo">H<span>⚡</span></div><div><b>HESVPN</b><small>PREMIUM VPN STORE</small></div></div><div class="secure">● امن</div></header>
+<main>
+<section class="hero"><div class="eyebrow">اتصال هوشمند، تجربه بهتر</div><h1>دنیای آزادتر،<br><em>با HESVPN</em></h1><p>پلن مناسب خودت رو انتخاب کن و بعد از تأیید پرداخت، کانفیگت رو از پشتیبانی دریافت کن.</p><div class="hero-tags"><span>🛡️ امن</span><span>⚡ سریع</span><span>🎧 پشتیبانی</span></div></section>
+<section class="wallet"><div><small>فروشگاه اشتراک</small><h2>پلن‌های VPN</h2><p>انتخاب کن؛ بقیه مراحل از طریق ربات انجام می‌شه.</p></div><div class="wallet-icon">✦</div></section>
+<section class="plans" id="plans">
+<article class="plan"><div class="plan-head"><span class="plan-icon">◈</span><span class="badge">اقتصادی</span></div><h3>۱۰ گیگابایت</h3><p class="duration">اعتبار ۳۰ روزه</p><div class="price">۵۰,۰۰۰ <small>تومان</small></div><button onclick="choosePlan('50000')">انتخاب پلن <span>←</span></button></article>
+<article class="plan"><div class="plan-head"><span class="plan-icon">✧</span><span class="badge blue">محبوب</span></div><h3>۲۰ گیگابایت</h3><p class="duration">اعتبار ۳۰ روزه</p><div class="price">۱۰۰,۰۰۰ <small>تومان</small></div><button onclick="choosePlan('100000')">انتخاب پلن <span>←</span></button></article>
+<article class="plan featured"><div class="plan-head"><span class="plan-icon">✦</span><span class="badge red">پیشنهاد ویژه</span></div><h3>۳۰ گیگابایت</h3><p class="duration">اعتبار ۳۰ روزه</p><div class="price">۲۵۰,۰۰۰ <small>تومان</small></div><button onclick="choosePlan('250000')">انتخاب پلن <span>←</span></button></article>
+<article class="plan"><div class="plan-head"><span class="plan-icon">∞</span><span class="badge">حجم نامحدود</span></div><h3>نامحدود</h3><p class="duration">اعتبار ۳۰ روزه</p><div class="price">۳۵۰,۰۰۰ <small>تومان</small></div><button onclick="choosePlan('350000')">انتخاب پلن <span>←</span></button></article>
+</section>
+<section class="info"><div class="info-icon">ⓘ</div><div><b>تحویل دستی و مطمئن</b><p>پس از پرداخت و تأیید مدیر، اطلاعات سرویس در ربات برای شما ارسال می‌شود.</p></div></section>
+<section class="quick"><button class="quick-btn" onclick="sendAction('my_account')">📦 سرویس‌های من</button><button class="quick-btn" onclick="sendAction('support')">🎫 پشتیبانی</button><button class="quick-btn" onclick="sendAction('wallet')">💳 کیف پول</button></section>
+</main>
+<nav class="bottom"><button class="active" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>⌂</span>خانه</button><button onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})"><span>▦</span>فروشگاه</button><button onclick="sendAction('my_account')"><span>♙</span>حساب من</button></nav>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body></html>
